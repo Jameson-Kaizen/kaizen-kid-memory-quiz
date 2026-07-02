@@ -42,6 +42,8 @@
   .kwmq-head img{height:34px;width:auto;display:block;}
   .kwmq-foot{max-width:560px;margin:20px auto 0;text-align:center;font-size:12px;color:#8a978f;line-height:1.5;}
   .kwmq-foot a{color:#246c45;text-decoration:none;}
+  #wmq-book{background:#F2673B;color:#fff;padding:12px 30px;}
+  #wmq-book:hover{background:#d9542c;}
 </style>
 </head>
 <body>
@@ -152,6 +154,7 @@
     <div class="wmq-form">
       <input id="wmq-name" class="wmq-input" type="text" placeholder="Your first name" autocomplete="given-name"/>
       <input id="wmq-email" class="wmq-input" type="email" placeholder="Your email address" autocomplete="email" inputmode="email"/>
+    <input id="wmq-phone" class="wmq-input" type="tel" placeholder="Phone number (optional)" autocomplete="tel" inputmode="tel"/>
       <label class="wmq-consent">
         <input id="wmq-consent" type="checkbox"/>
         <span>Yes, email me my child's results and occasional working memory tips from Kaizen Education Services. I can unsubscribe anytime.</span>
@@ -596,7 +599,7 @@
     $("wmq-gate-go").disabled=!ok;
   }
   function submitLead(){
-    var email=($("wmq-email").value||"").trim();
+    var email=($("wmq-email").value||"").trim(); var phone=(($("wmq-phone")&&$("wmq-phone").value)||"").trim();
     var firstName=($("wmq-name").value||"").trim();
     if(!emailValid(email) || !$("wmq-consent").checked){
       var e=$("wmq-gate-err"); e.hidden=false; e.textContent="Please enter a valid email and check the box."; return;
@@ -623,7 +626,7 @@
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-          firstName:firstName, email:email, consent:true, audience:"parent",
+          firstName:firstName, email:email, phone:phone, consent:true, audience:"parent",
           band:LAST.band, index:LAST.idx, domains:domains, childAge:LAST.childAge,
           attribution:ATTRIBUTION
         })
