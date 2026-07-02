@@ -154,7 +154,7 @@
     <div class="wmq-form">
       <input id="wmq-name" class="wmq-input" type="text" placeholder="Your first name" autocomplete="given-name"/>
       <input id="wmq-email" class="wmq-input" type="email" placeholder="Your email address" autocomplete="email" inputmode="email"/>
-    <input id="wmq-phone" class="wmq-input" type="tel" placeholder="Phone number (optional)" autocomplete="tel" inputmode="tel"/>
+    <input id="wmq-phone" class="wmq-input" type="tel" placeholder="Phone number" autocomplete="tel" inputmode="tel"/>
       <label class="wmq-consent">
         <input id="wmq-consent" type="checkbox"/>
         <span>Yes, email me my child's results and occasional working memory tips from Kaizen Education Services. I can unsubscribe anytime.</span>
@@ -595,7 +595,7 @@
   // ---- Email gate + lead capture -------------------------------------------
   function emailValid(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
   function gateState(){
-    var ok = emailValid(($("wmq-email").value||"").trim()) && $("wmq-consent").checked;
+    var ok = emailValid(($("wmq-email").value||"").trim()) && (String(($("wmq-phone")&&$("wmq-phone").value)||"").replace(/\D/g,"").length>=7) && $("wmq-consent").checked;
     $("wmq-gate-go").disabled=!ok;
   }
   function submitLead(){
@@ -661,6 +661,7 @@
       Array.prototype.forEach.call($("wmq-ages").children,function(c){c.classList.remove("sel");}); show("wmq-parent"); });
     // email gate
     $("wmq-email").addEventListener("input", gateState);
+    $("wmq-phone").addEventListener("input", gateState);
     $("wmq-consent").addEventListener("change", gateState);
     $("wmq-gate-go").addEventListener("click", submitLead);
     $("wmq-email").addEventListener("keydown", function(e){ if(e.key==="Enter" && !$("wmq-gate-go").disabled) submitLead(); });
